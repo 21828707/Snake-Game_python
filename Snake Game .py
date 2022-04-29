@@ -1,46 +1,38 @@
-from turtle import * # ÅÍÆ² ±×·¡ÇÈ »ç¿ë
-from time import sleep # Å¸ÀÓ ¸ğµâÀÇ sleep()ÇÔ¼ö »ç¿ë
-from random import randint # ·£´ı ¸ğµâÀÇ randint()ÇÔ¼ö »ç¿ë
+ï»¿from turtle import * # í„°í‹€ ê·¸ë˜í”½ ì‚¬ìš©
+from time import sleep # íƒ€ì„ ëª¨ë“ˆì˜ sleep()í•¨ìˆ˜ ì‚¬ìš©
+from random import randint # ëœë¤ ëª¨ë“ˆì˜ randint()í•¨ìˆ˜ ì‚¬ìš©
 
-# ½ºÅ©¸° »ı¼º
+# ìŠ¤í¬ë¦° ìƒì„±
 win = Screen()
 win.title("Snake Game")
 win.setup(width=600,height=600)
-win.tracer(0) # ÄÚµåµéÀÌ ½ÇÇàµÇ´Â °úÁ¤À» ½ºÅ©¸°Ã¢¿¡ Ãâ·ÂÇÏÁö ¾Ê´Â´Ù.
+win.tracer(0) # ì½”ë“œë“¤ì´ ì‹¤í–‰ë˜ëŠ” ê³¼ì •ì„ ìŠ¤í¬ë¦°ì°½ì— ì¶œë ¥í•˜ì§€ ì•ŠëŠ”ë‹¤.
 dela=0.1
-speed = 10	# ½ºÇÇµå
+speed = 10	# ìŠ¤í”¼ë“œ
 select = 0
-time - 0
+time = 0
 
 #head
 head = Turtle()
 head.color("#696969")
 head.shape("square")
-head.penup() # ÆæÀ» µé¾î ¿Ã¸°´Ù. - ÀÌµ¿ ½Ã ¼±ÀÌ ±×¾îÁöÁö ¾Ê´Â´Ù.
+head.penup() # íœì„ ë“¤ì–´ ì˜¬ë¦°ë‹¤. - ì´ë™ ì‹œ ì„ ì´ ê·¸ì–´ì§€ì§€ ì•ŠëŠ”ë‹¤.
 head.speed(0) 
-head.direction = "stop" # ¹æÇâ - ½ÃÀÛ ÀüÀº Á¤Áö»óÅÂ
+head.direction = "stop" # ë°©í–¥ - ì‹œì‘ ì „ì€ ì •ì§€ìƒíƒœ
 
 #food
 food = Turtle()
 food.color('orange')
-food.penup() # ÆæÀ» µé¾î ¿Ã¸°´Ù. - ÀÌµ¿ ½Ã ¼±ÀÌ ±×¾îÁöÁö ¾Ê´Â´Ù.
+food.penup() # íœì„ ë“¤ì–´ ì˜¬ë¦°ë‹¤. - ì´ë™ ì‹œ ì„ ì´ ê·¸ì–´ì§€ì§€ ì•ŠëŠ”ë‹¤.
 food.shape("circle")
 food.speed(0)
 
 # item
 item = Turtle()
 item.color('blue')
-item.penup() # ÆæÀ» µé¾î ¿Ã¸°´Ù. - ÀÌµ¿ ½Ã ¼±ÀÌ ±×¾îÁöÁö ¾Ê´Â´Ù.
+item.penup() # íœì„ ë“¤ì–´ ì˜¬ë¦°ë‹¤. - ì´ë™ ì‹œ ì„ ì´ ê·¸ì–´ì§€ì§€ ì•ŠëŠ”ë‹¤.
 item.shape("circle")
-item.hideturtle()
 item.speed(0)
-select = randint(1,3)
-if select == 1:
-	item.write("fast",align="center",font=("arial",10,"bold"))
-elif select == 2:
-	item.write("short",align="center",font=("arial",10,"bold"))
-elif select == 3:
-	item.write("bonus",align="center",font=("arial",10,"bold"))
 
 #scoreing
 scr=Turtle()
@@ -48,9 +40,9 @@ scr.color("black")
 scr.shape("triangle")
 scr.penup()
 scr.speed(0)
-scr.hideturtle() # »ï°¢Çü ¸ğÇüÀ» ¼û±ä´Ù.
+scr.hideturtle() # ì‚¼ê°í˜• ëª¨í˜•ì„ ìˆ¨ê¸´ë‹¤.
 scr.goto(0,240)
-scr.write("Score: 0 Highscore: 0",align="center",font=("arial",10,"bold")) # ¼û±ä ¹®ÀÚ¿­ÀÌ ÀÖ´Â À§Ä¡¿¡ Ãâ·Â
+scr.write("Score: 0 Highscore: 0",align="center",font=("arial",10,"bold")) # ìˆ¨ê¸´ ë¬¸ìì—´ì´ ìˆëŠ” ìœ„ì¹˜ì— ì¶œë ¥
 score=-1
 highscore=-1
 
@@ -59,12 +51,12 @@ own.color("black")
 own.shape("triangle")
 own.penup()
 own.speed(0)
-own.hideturtle() # »ï°¢Çü ¸ğÇüÀ» ¼û±ä´Ù.
+own.hideturtle() # ì‚¼ê°í˜• ëª¨í˜•ì„ ìˆ¨ê¸´ë‹¤.
 own.goto(-250,-280)
-own.write("Created By OMar ",font=("arial",5,"bold")) # ¼û±ä ¹®ÀÚ¿­ÀÌ ÀÖ´Â À§Ä¡¿¡ Ãâ·Â
+own.write("Created By OMar ",font=("arial",5,"bold")) # ìˆ¨ê¸´ ë¬¸ìì—´ì´ ìˆëŠ” ìœ„ì¹˜ì— ì¶œë ¥
 
 #key press function
-# ÇÔ¼ö Á¤ÀÇ(def ÇÔ¼ö¸í(¸Å°³º¯¼ö))
+# í•¨ìˆ˜ ì •ì˜(def í•¨ìˆ˜ëª…(ë§¤ê°œë³€ìˆ˜))
 def go_up():
 	dec = head.direction
 	if dec != "down":
@@ -85,7 +77,7 @@ win.onkeypress(go_left, "a")
 win.onkeypress(go_right, "d")
 
 # head move function 
-# º»·¡ÀÇ À§Ä¡¿¡¼­ ¼Óµµ ¸¸Å­ÀÇ À§Ä¡ ÀÌµ¿
+# ë³¸ë˜ì˜ ìœ„ì¹˜ì—ì„œ ì†ë„ ë§Œí¼ì˜ ìœ„ì¹˜ ì´ë™
 def move():
 	dec = head.direction
 	if dec == "up":
@@ -100,8 +92,8 @@ def move():
 #body segment
 segment=[]
 while True:
-	win.update() # È­¸éÀ» °è¼Ó ¾÷µ¥ÀÌÆ®
-	if head.xcor() < -290 or head.xcor() > 290 or head.ycor() < -290 or head.ycor() > 290: # È­¸é ¹ÛÀ¸·Î ÀÌµ¿ÇÒ °æ¿ì ÃÊ±âÈ­
+	win.update() # í™”ë©´ì„ ê³„ì† ì—…ë°ì´íŠ¸
+	if head.xcor() < -290 or head.xcor() > 290 or head.ycor() < -290 or head.ycor() > 290: # í™”ë©´ ë°–ìœ¼ë¡œ ì´ë™í•  ê²½ìš° ì´ˆê¸°í™”
 		head.goto(0,0)
 		head.direction = "stop"
 		for segments in segment:
@@ -111,7 +103,7 @@ while True:
 		scr.clear()
 		scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 		segment=[] 
-	if head.distance(food) < 20: # Á¡¼ö È¹µæ ¹× ¸öÃ¼, Á¡¼ö Ãß°¡
+	if head.distance(food) < 20: # ì ìˆ˜ íšë“ ë° ëª¸ì²´, ì ìˆ˜ ì¶”ê°€
 		food.goto(randint(-290,290),randint(-290,290))
 		
 		#new body segment
@@ -120,7 +112,7 @@ while True:
 		new_segment.color("#A9A9A9")
 		new_segment.shape("square")
 		new_segment.penup()
-		segment.append(new_segment) # segment Áõ°¡
+		segment.append(new_segment) # segment ì¦ê°€
 		
 		#scoring
 		score+=1
@@ -132,38 +124,37 @@ while True:
 	
 
 	if head.distance(item) < 20:
+		
 		item.goto(randint(-290,290),randint(-290,290))
 		while food.xcor == item.xcor and food.ycor == item.ycor:
 			item.goto(randint(-290,290),randint(-290,290))
-		if select == 1 or time > 0:
-			if time < 30:
-				speed += 0.5
-				time += 1
-			elif time >= 30:
-				time = 0
+		if select == 1:
+			if speed == 10:
+				speed += 10
 		elif select == 2:
-			segment.pop()
+			if len(segment) > 1:
+				segment.pop()
 		elif select == 3:
 			score += 5
 
 		select = randint(1,3)
 		if select == 1:
-			item.write("fast",align="center",font=("arial",10,"bold"))
+			item.shape("circle") # ë¶€ìŠ¤íŠ¸ ì•„ì´í…œ êµ¬í˜„ ì™„ì„±
 		elif select == 2:
-			item.write("short",align="center",font=("arial",10,"bold"))
+			item.shape("triangle")
 		elif select == 3:
-			item.write("bonus",align="center",font=("arial",10,"bold"))
+			item.shape("square")
 
 		
 	#add body with head
-	for i in range(len(segment)-1,0,-1): # ¸öÃ¼ÀÇ ±æÀÌ°¡ 2ÀÌ»óÀÏ °æ¿ì for¹® ¸öÃ¼°¡ ÀÌµ¿ÇÏ°Ô µÈ´Ù. 
+	for i in range(len(segment)-1,0,-1): # ëª¸ì²´ì˜ ê¸¸ì´ê°€ 2ì´ìƒì¼ ê²½ìš° forë¬¸ ëª¸ì²´ê°€ ì´ë™í•˜ê²Œ ëœë‹¤. 
 		x,y=segment[i-1].xcor(),segment[i-1].ycor()
 		segment[i].goto(x,y)
-	if len(segment) > 0: # ¸öÃ¼ÀÇ ±æÀÌ°¡ 1°³ÀÏ °æ¿ì À§ÀÇ for¹®À» À§ÇØ¼­ µû·Î ÄÚµå
+	if len(segment) > 0: # ëª¸ì²´ì˜ ê¸¸ì´ê°€ 1ê°œì¼ ê²½ìš° ìœ„ì˜ forë¬¸ì„ ìœ„í•´ì„œ ë”°ë¡œ ì½”ë“œ
 		segment[0].goto(head.xcor(),head.ycor())
 	move()
 	#cut body
-	for segments in segment: # ÀÚ½ÅÀÇ ¸ö°ú ºÎµ÷ÃÆÀ» °æ¿ì
+	for segments in segment: # ìì‹ ì˜ ëª¸ê³¼ ë¶€ë”§ì³¤ì„ ê²½ìš°
 		if head.distance(segments) < 10:
 			head.goto(0,0)
 			head.direction = "stop"
@@ -174,5 +165,12 @@ while True:
 			scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 			segment=[]
 		dela=0.1
-	sleep(dela) # ¹ìÀÇ ¿òÁ÷ÀÓÀ» ½Äº° °¡´ÉÇÏ°Ô Á¶±İ¾¿ Á¤Áö
+
+	# ì•„ì´í…œ 1 íš¨ê³¼ ì œì–´
+	if speed != 10:
+		time += 1
+	if time >= 30:
+		time = 0
+		speed = 10
+	sleep(dela) # ë±€ì˜ ì›€ì§ì„ì„ ì‹ë³„ ê°€ëŠ¥í•˜ê²Œ ì¡°ê¸ˆì”© ì •ì§€
 win.mainloop()
