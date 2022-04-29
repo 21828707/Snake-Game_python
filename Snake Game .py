@@ -9,6 +9,8 @@ win.setup(width=600,height=600)
 win.tracer(0) # 코드들이 실행되는 과정을 스크린창에 출력하지 않는다.
 dela=0.1
 speed = 10	# 스피드
+select = 0
+time - 0
 
 #head
 head = Turtle()
@@ -24,6 +26,21 @@ food.color('orange')
 food.penup() # 펜을 들어 올린다. - 이동 시 선이 그어지지 않는다.
 food.shape("circle")
 food.speed(0)
+
+# item
+item = Turtle()
+item.color('blue')
+item.penup() # 펜을 들어 올린다. - 이동 시 선이 그어지지 않는다.
+item.shape("circle")
+item.hideturtle()
+item.speed(0)
+select = randint(1,3)
+if select == 1:
+	item.write("fast",align="center",font=("arial",10,"bold"))
+elif select == 2:
+	item.write("short",align="center",font=("arial",10,"bold"))
+elif select == 3:
+	item.write("bonus",align="center",font=("arial",10,"bold"))
 
 #scoreing
 scr=Turtle()
@@ -112,6 +129,32 @@ while True:
 		scr.clear()
 		scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 		dela+=0.001
+	
+
+	if head.distance(item) < 20:
+		item.goto(randint(-290,290),randint(-290,290))
+		while food.xcor == item.xcor and food.ycor == item.ycor:
+			item.goto(randint(-290,290),randint(-290,290))
+		if select == 1 or time > 0:
+			if time < 30:
+				speed += 0.5
+				time += 1
+			elif time >= 30:
+				time = 0
+		elif select == 2:
+			segment.pop()
+		elif select == 3:
+			score += 5
+
+		select = randint(1,3)
+		if select == 1:
+			item.write("fast",align="center",font=("arial",10,"bold"))
+		elif select == 2:
+			item.write("short",align="center",font=("arial",10,"bold"))
+		elif select == 3:
+			item.write("bonus",align="center",font=("arial",10,"bold"))
+
+		
 	#add body with head
 	for i in range(len(segment)-1,0,-1): # 몸체의 길이가 2이상일 경우 for문 몸체가 이동하게 된다. 
 		x,y=segment[i-1].xcor(),segment[i-1].ycor()
