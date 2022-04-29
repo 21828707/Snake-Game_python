@@ -1,23 +1,27 @@
-from turtle import *
-from time import sleep
-from random import randint
+from turtle import * # 터틀 그래픽 사용
+from time import sleep # 타임 모듈의 sleep()함수 사용
+from random import randint # 랜덤 모듈의 randint()함수 사용
+
+# 스크린 생성
 win = Screen()
 win.title("Snake Game")
 win.setup(width=600,height=600)
-win.tracer(0)
+win.tracer(0) # 코드들이 실행되는 과정을 스크린창에 출력하지 않는다.
 dela=0.1
+speed = 10	# 스피드
+
 #head
 head = Turtle()
 head.color("#696969")
 head.shape("square")
-head.penup()
-head.speed(0)
-head.diraction = "stop"
+head.penup() # 펜을 들어 올린다. - 이동 시 선이 그어지지 않는다.
+head.speed(0) 
+head.direction = "stop" # 방향 - 시작 전은 정지상태
 
 #food
 food = Turtle()
 food.color('orange')
-food.penup()
+food.penup() # 펜을 들어 올린다. - 이동 시 선이 그어지지 않는다.
 food.shape("circle")
 food.speed(0)
 
@@ -27,9 +31,9 @@ scr.color("black")
 scr.shape("triangle")
 scr.penup()
 scr.speed(0)
-scr.hideturtle()
+scr.hideturtle() # 삼각형 모형을 숨긴다.
 scr.goto(0,240)
-scr.write("Score: 0 Highscore: 0",align="center",font=("arial",10,"bold"))
+scr.write("Score: 0 Highscore: 0",align="center",font=("arial",10,"bold")) # 숨긴 문자열이 있는 위치에 출력
 score=-1
 highscore=-1
 
@@ -38,54 +42,59 @@ own.color("black")
 own.shape("triangle")
 own.penup()
 own.speed(0)
-own.hideturtle()
+own.hideturtle() # 삼각형 모형을 숨긴다.
 own.goto(-250,-280)
-own.write("Created By OMar ",font=("arial",5,"bold"))
+own.write("Created By OMar ",font=("arial",5,"bold")) # 숨긴 문자열이 있는 위치에 출력
+
 #key press function
+# 함수 정의(def 함수명(매개변수))
 def go_up():
-	dec = head.diraction
+	dec = head.direction
 	if dec != "down":
-		head.diraction = "up"
+		head.direction = "up"
 def go_down():
-	if head.diraction != "up":
-		head.diraction = "down"
+	if head.direction != "up":
+		head.direction = "down"
 def go_left():
-	if head.diraction != "right":
-		head.diraction = "left"
+	if head.direction != "right":
+		head.direction = "left"
 def go_right():
-	if head.diraction != "left":
-		head.diraction = "right"
+	if head.direction != "left":
+		head.direction = "right"
 win.listen()
 win.onkeypress(go_up, "w")
 win.onkeypress(go_down, "s")
 win.onkeypress(go_left, "a")
 win.onkeypress(go_right, "d")
+
 # head move function 
+# 본래의 위치에서 속도 만큼의 위치 이동
 def move():
-	dec = head.diraction
+	dec = head.direction
 	if dec == "up":
-		head.sety(head.ycor()+10)
+		head.sety(head.ycor()+ speed)
 	elif dec == "down":
-		head.sety(head.ycor()-10)
+		head.sety(head.ycor()- speed)
 	elif dec == "left":
-		head.setx(head.xcor()-10)
+		head.setx(head.xcor()- speed)
 	elif dec == "right":
-		head.setx(head.xcor()+10)
+		head.setx(head.xcor()+ speed)
+
 #body segment
 segment=[]
 while True:
-	win.update()
-	if head.xcor() < -290 or head.xcor() > 290 or head.ycor() < -290 or head.ycor() > 290:
+	win.update() # 화면을 계속 업데이트
+	if head.xcor() < -290 or head.xcor() > 290 or head.ycor() < -290 or head.ycor() > 290: # 화면 밖으로 이동할 경우 초기화
 		head.goto(0,0)
-		head.diraction = "stop"
+		head.direction = "stop"
 		for segments in segment:
 			segments.goto(5000,5000)
 		score=0
 		dela=0.1
 		scr.clear()
 		scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
-		segment=[]
-	if head.distance(food) < 20:
+		segment=[] 
+	if head.distance(food) < 20: # 점수 획득 및 몸체, 점수 추가
 		food.goto(randint(-290,290),randint(-290,290))
 		
 		#new body segment
@@ -94,7 +103,7 @@ while True:
 		new_segment.color("#A9A9A9")
 		new_segment.shape("square")
 		new_segment.penup()
-		segment.append(new_segment)
+		segment.append(new_segment) # segment 증가
 		
 		#scoring
 		score+=1
@@ -104,17 +113,17 @@ while True:
 		scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 		dela+=0.001
 	#add body with head
-	for i in range(len(segment)-1,0,-1):
+	for i in range(len(segment)-1,0,-1): # 몸체의 길이가 2이상일 경우 for문 몸체가 이동하게 된다. 
 		x,y=segment[i-1].xcor(),segment[i-1].ycor()
 		segment[i].goto(x,y)
-	if len(segment) > 0:
+	if len(segment) > 0: # 몸체의 길이가 1개일 경우 위의 for문을 위해서 따로 코드
 		segment[0].goto(head.xcor(),head.ycor())
 	move()
 	#cut body
-	for segments in segment:
+	for segments in segment: # 자신의 몸과 부딧쳤을 경우
 		if head.distance(segments) < 10:
 			head.goto(0,0)
-			head.diraction = "stop"
+			head.direction = "stop"
 			for i in segment:
 				i.goto(500,500)
 			score=0
@@ -122,5 +131,5 @@ while True:
 			scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 			segment=[]
 		dela=0.1
-	sleep(dela)
+	sleep(dela) # 뱀의 움직임을 식별 가능하게 조금씩 정지
 win.mainloop()
