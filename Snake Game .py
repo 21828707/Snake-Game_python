@@ -1,5 +1,5 @@
 ﻿from turtle import * # 터틀 그래픽 사용
-from time import sleep # 타임 모듈의 sleep()함수 사용
+from time import sleep, thread_time, thread_time_ns # 타임 모듈의 sleep()함수 사용
 from random import randint # 랜덤 모듈의 randint()함수 사용
 
 # 스크린 생성
@@ -32,6 +32,7 @@ item = Turtle()
 item.color('blue')
 item.penup() # 펜을 들어 올린다. - 이동 시 선이 그어지지 않는다.
 item.shape("circle")
+item.hideturtle()
 item.speed(0)
 
 #scoreing
@@ -129,21 +130,30 @@ while True:
 		while food.xcor == item.xcor and food.ycor == item.ycor:
 			item.goto(randint(-290,290),randint(-290,290))
 		if select == 1:
+			item.clear()
 			if speed == 10:
 				speed += 10
 		elif select == 2:
+			item.clear()
 			if len(segment) > 1:
-				segment.pop()
+				for i in range(0, int(len(segment)/2)):
+					tail = segment.pop(i)
+					tail.goto(1000,1000)
 		elif select == 3:
+			item.clear()
 			score += 5
+			if score > highscore:
+				highscore = score
+			scr.clear()
+			scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 
-		select = randint(1,3)
+		select = randint(2,2)
 		if select == 1:
-			item.shape("circle") # 부스트 아이템 구현 완성
+			item.write(f"buster",align="center",font=("arial",10,"bold")) # 부스트 아이템 구현 완성
 		elif select == 2:
-			item.shape("triangle")
+			item.write(f"short",align="center",font=("arial",10,"bold")) # 꼬리 절삭 구현 완성
 		elif select == 3:
-			item.shape("square")
+			item.write(f"bonus",align="center",font=("arial",10,"bold")) # 보너스 구현 완성
 
 		
 	#add body with head
