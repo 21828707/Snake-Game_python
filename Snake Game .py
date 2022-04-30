@@ -11,6 +11,10 @@ dela=0.1
 speed = 10	# 스피드
 select = 0
 time = 0
+time_trap = 0
+trap_area = 0 # 실시간으로 움직이는 함정의 구역 지정
+trap_on = 0 # 시작하자마자 빨라지는 오류 수정
+attack = False
 
 #head
 head = Turtle()
@@ -34,6 +38,14 @@ item.penup() # 펜을 들어 올린다. - 이동 시 선이 그어지지 않는�
 item.shape("circle")
 item.hideturtle()
 item.speed(0)
+
+# trap
+trap = Turtle()
+trap.color("red")
+trap.penup()
+trap.shape("turtle")
+trap.hideturtle()
+trap.speed(0)
 
 #scoreing
 scr=Turtle()
@@ -103,7 +115,8 @@ while True:
 		dela=0.1
 		scr.clear()
 		scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
-		segment=[] 
+		segment=[]
+		speed = 10 # 함정에 의해 죽으면 속도 복원
 	if head.distance(food) < 20: # 점수 획득 및 몸체, 점수 추가
 		food.goto(randint(-290,290),randint(-290,290))
 		
@@ -147,13 +160,43 @@ while True:
 			scr.clear()
 			scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 
-		select = randint(2,2)
+		select = randint(1,3)
 		if select == 1:
 			item.write(f"buster",align="center",font=("arial",10,"bold")) # 부스트 아이템 구현 완성
 		elif select == 2:
 			item.write(f"short",align="center",font=("arial",10,"bold")) # 꼬리 절삭 구현 완성
 		elif select == 3:
 			item.write(f"bonus",align="center",font=("arial",10,"bold")) # 보너스 구현 완성
+	
+	if time_trap >=30:
+		trap_area = randint(1, 4)
+		if trap_area == 1:
+			trap.goto(head.xcor() + randint(50, 100), head.ycor() + randint(50, 100))
+		if trap_area == 2:
+			trap.goto(head.xcor() + randint(50, 100), head.ycor() + randint(-100, -50))
+		if trap_area == 3:
+			trap.goto(head.xcor() + randint(-100, -50), head.ycor() + randint(50, 100))
+		if trap_area == 4:
+			trap.goto(head.xcor() + randint(-100, -50), head.ycor() + randint(-100, -50))
+		while (food.xcor == trap.xcor and food.ycor == trap.ycor) or (item.xcor == trap.xcor and item.ycor == trap.ycor):
+			trap.goto(randint(-290,290),randint(-290,290))
+		trap.clear()
+		trap.write(f"controlout",align="center",font=("arial",10,"bold"))
+		time_trap = 0
+	time_trap += 1
+	if head.distance(trap) < 20: # control out 함정 구현
+		
+		trap.goto(randint(-290,290),randint(-290,290))
+		while (food.xcor == trap.xcor and food.ycor == trap.ycor) or (item.xcor == trap.xcor and item.ycor == trap.ycor):
+			trap.goto(randint(-290,290),randint(-290,290))
+		
+		trap.clear()
+		if trap_on == 1:
+			if speed <= 20:
+				speed = 100
+				attack = True
+		trap_on = 1
+		trap.write(f"controlout",align="center",font=("arial",10,"bold"))
 
 		
 	#add body with head
@@ -174,10 +217,15 @@ while True:
 			scr.clear()
 			scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 			segment=[]
-		dela=0.1
+			speed = 10 # 함정에 의해 죽으면 속도 복원
+		dela=0.1 # i dont know
 
-	# 아이템 1 효과 제어
+
+	# 아이템 1 효과 제어 함정 제어
 	if speed != 10:
+		if attack == True and time != 0:
+			time = 0
+			attack = False
 		time += 1
 	if time >= 30:
 		time = 0
