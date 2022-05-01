@@ -15,7 +15,11 @@ time_trap = 0
 trap_area = 0 # 실시간으로 움직이는 함정의 구역 지정
 trap_on = 0 # 시작하자마자 빨라지는 오류 수정
 attack = False
-timer_time = 0
+timer_time = 0 
+time_limit = 300 # 시간이 300이 되면 게임 오버
+eat = 0
+eat_limit = 30 # 시간 안에 30개의 먹이를 먹으면 승리
+game_end = 0 # 게임의 목표(먹이, 시간)에 도달했는지 확인
 
 #head
 head = Turtle()
@@ -67,6 +71,14 @@ timer.speed(0)
 timer.hideturtle()
 timer.goto(250, 280)
 timer.write(f"time : {timer_time}",align="center",font=("arial",10,"bold"))
+
+result = Turtle()
+result.color("black")
+result.shape("triangle")
+result.penup()
+result.speed(0)
+result.hideturtle() # 삼각형 모형을 숨긴다.
+result.goto(0,260)
 
 own=Turtle()
 own.color("black")
@@ -126,7 +138,9 @@ while True:
 		scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 		segment=[]
 		speed = 10 # 함정에 의해 죽으면 속도 복원
+		eat = 0
 	if head.distance(food) < 20: # 점수 획득 및 몸체, 점수 추가
+		eat += 1
 		food.goto(randint(-290,290),randint(-290,290))
 		
 		#new body segment
@@ -215,6 +229,10 @@ while True:
 	if len(segment) > 0: # 몸체의 길이가 1개일 경우 위의 for문을 위해서 따로 코드
 		segment[0].goto(head.xcor(),head.ycor())
 	move()
+	if game_end == 1 and head.direction != "stop": # 재시작 시 게임결과창 제거
+		result.clear()
+		game_end = 0
+
 	#cut body
 	for segments in segment: # 자신의 몸과 부딧쳤을 경우
 		if head.distance(segments) < 10:
@@ -227,9 +245,29 @@ while True:
 			scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
 			segment=[]
 			speed = 10 # 함정에 의해 죽으면 속도 복원
+			eat = 0
 		dela=0.1 # i dont know
 
-	if head.direction != "stop":
+	if int(timer_time) == time_limit or eat == eat_limit: # 게임 목표 지점에 도달 시 초기화
+		head.goto(0,0)
+		head.direction = "stop"
+		for segments in segment:
+			segments.goto(1500,1500)
+		my_score = score
+		score=0
+		dela=0.1
+		scr.clear()
+		scr.write(f"Score: {score} Highscore: {highscore}",align="center",font=("arial",10,"bold"))
+		if int(timer_time) == time_limit:
+			result.write("Game Over",align="center",font=("arial",10,"bold"))
+		elif eat == eat_limit:
+			result.write(f"Success Your Score Is : {my_score}",align="center",font=("arial",10,"bold"))
+		segment=[]
+		speed = 10 # 함정에 의해 죽으면 속도 복원
+		eat = 0
+		game_end = 1
+
+	if head.direction != "stop": # 초기 화면 머리가 움직이지 않는 화면은 시간을 흐르지 않게 설정
 		timer_time += 0.1
 		print_time = int(timer_time)
 		timer.clear()
