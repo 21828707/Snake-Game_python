@@ -15,6 +15,7 @@ time_trap = 0
 trap_area = 0 # 실시간으로 움직이는 함정의 구역 지정
 trap_on = 0 # 시작하자마자 빨라지는 오류 수정
 attack = False
+timer_time = 0
 
 #head
 head = Turtle()
@@ -58,6 +59,14 @@ scr.goto(0,240)
 scr.write("Score: 0 Highscore: 0",align="center",font=("arial",10,"bold")) # 숨긴 문자열이 있는 위치에 출력
 score=-1
 highscore=-1
+
+timer = Turtle()
+timer.color("black")
+timer.penup()
+timer.speed(0)
+timer.hideturtle()
+timer.goto(250, 280)
+timer.write(f"time : {timer_time}",align="center",font=("arial",10,"bold"))
 
 own=Turtle()
 own.color("black")
@@ -220,6 +229,14 @@ while True:
 			speed = 10 # 함정에 의해 죽으면 속도 복원
 		dela=0.1 # i dont know
 
+	if head.direction != "stop":
+		timer_time += 0.1
+		print_time = int(timer_time)
+		timer.clear()
+		timer.write(f"time : {print_time}",align="center",font=("arial",10,"bold"))
+	else:
+		timer_time = 0
+		time_trap = 0
 
 	# 아이템 1 효과 제어 함정 제어
 	if speed != 10:
